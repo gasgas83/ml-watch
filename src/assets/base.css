@@ -1,0 +1,33 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --suecananobold: suecananobold, Arial, Helvetica, sans-serif;
+  --suecananosemibold: suecananosemibold, Arial, Helvetica, sans-serif;
+  --suecananoheavy: suecananoheavy, Arial, Helvetica, sans-serif;
+  --suecananomedium: suecananomedium, Arial, Helvetica, sans-serif;
+  --suecananolight: suecananolight, Arial, Helvetica, sans-serif;
+  --suecanano: suecanano, Arial, Helvetica, sans-serif;
+  --prumo: 'Prumo', Georgia, 'Times New Roman', Times, serif;
+  --arial: Arial, Helvetica, sans-serif;
+  --txtNota: Georgia, 'serif';
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--prumo);
+}
+
+p.nota-parrafo {
+  font-family: var(--txtNota);
+  font-weight: 100;
+  margin-bottom: 2rem;
+  width: 730px;
+}
+
+p strong {
+  font-weight: 700;
+}

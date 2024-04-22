@@ -1,0 +1,37 @@
+{
+  "name": "vue3-empty-project",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "nota-ln": "node ./scripts/nota-ln.js",
+    "deployS3": "node ./scripts/deploy-s3.js",
+    "deploy": "npm run build && npm run deployS3 && npm run nota-ln"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.3.0",
+    "flickity": "^3.0.0",
+    "fs": "^0.0.1-security",
+    "mime-types": "^2.1.35",
+    "open": "^9.1.0",
+    "path": "^0.12.7",
+    "pinia": "^2.0.35",
+    "recursive-readdir": "^2.2.3",
+    "sass": "^1.62.1",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^4.2.1",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "eslint": "^8.39.0",
+    "eslint-plugin-vue": "^9.11.0",
+    "prettier": "^2.8.8",
+    "vite": "^4.3.4"
+  }
+}
