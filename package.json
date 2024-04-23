@@ -8,10 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/",
-    "nota-ln": "node ./scripts/nota-ln.js",
-    "deployS3": "node ./scripts/deploy-s3.js",
-    "deploy": "npm run build && npm run deployS3 && npm run nota-ln"
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.3.0",

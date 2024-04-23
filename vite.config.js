@@ -15,5 +15,5 @@ export default defineConfig({
   server: {
     host: true
   },
-  base: deployOpts.BASE_APP,
+  // base: deployOpts.BASE_APP,
 })
