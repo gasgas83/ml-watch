@@ -1,6 +1,27 @@
 <script setup>
 import { onMounted, reactive, ref, computed } from 'vue'
 
+let searchDefault = 'reloj%20casio'
+let searchStorage = 'watches-deleted'
+let searchCategory = 'MLA1442'
+
+const queryString = window.location.search; // Get the query string from the URL
+const urlParams = new URLSearchParams(queryString);
+
+if(urlParams.get('search')){
+  searchDefault = urlParams.get('search');
+  searchStorage = urlParams.get('storage');
+  searchCategory = urlParams.get('category');
+
+  if(searchDefault === 'Zenith astra' ){
+    searchDefault = searchDefault + '&WHEEL_SIZE=[26-26]&BRAND=27710'
+  }else if( searchDefault == 'cannondale'){
+    searchDefault = searchDefault + '&WHEEL_SIZE=[26-26]&BRAND=2364179'
+  }
+}
+
+console.log(urlParams.get('search'), urlParams.get('storage'))
+
 let data = reactive({
   datos: null,
   actualOffset: 0,
@@ -45,7 +66,7 @@ let changeData = () => {
 
 async function fetchData() {
     try {
-        const response = await fetch("https://api.mercadolibre.com/sites/MLA/search?q=reloj%20casio&category=MLA1442&condition=used&offset=" + data.actualOffset); 
+        const response = await fetch("https://api.mercadolibre.com/sites/MLA/search?q="+searchDefault+"&category="+searchCategory+"&condition=used&offset=" + data.actualOffset); 
         data.datos = await response.json();
         data.totalOffsets = data.datos.paging.total / 50;
         data.totalResults = data.datos.paging.total
@@ -56,14 +77,6 @@ async function fetchData() {
         console.error('Error fetching data:', error);
     }
 }
-
-const results = computed(() => { //computed
-  if (data.datos) {
-    return data.datos.results
-  } else {
-    return []
-  }
-})
 
 const totalDeleted = computed(() => { 
    return data.watchesDeleted.length
@@ -76,11 +89,11 @@ const percent = computed(() => {
 // methods
 
 const getDataStorage = () => {
-  if(localStorage.getItem('watches-deleted') == null){
-    localStorage.setItem( 'watches-deleted', JSON.stringify(data.watchesDeleted))
+  if(localStorage.getItem(searchStorage) == null){
+    localStorage.setItem(searchStorage, JSON.stringify(data.watchesDeleted))
   }else{
     data.watchesDeleted = JSON.parse(
-      localStorage.getItem('watches-deleted')
+      localStorage.getItem(searchStorage)
     )
     console.log(data.watchesDeleted)
   }
@@ -97,7 +110,7 @@ const getPrice = (price) => {
 const deleteItem = (id) => {
   data.watchesDeleted.push(id)
   data.allPost = data.allPost.filter(item => item.id !== id);
-  localStorage.setItem( 'watches-deleted', JSON.stringify(data.watchesDeleted))
+  localStorage.setItem( searchStorage, JSON.stringify(data.watchesDeleted))
 } 
 
 
@@ -105,27 +118,14 @@ const deleteItem = (id) => {
 onMounted(() => { // mounted
   getDataStorage();
   fetchData();
-
-
-  // Current and previous price levels
-let currentPriceLevel = 25000; // For example
-let previousPriceLevel = 20000; // For example
-
-// Calculate inflation percentage
-let inflationPercentage = ((currentPriceLevel - previousPriceLevel) / previousPriceLevel) * 100;
-
-console.log("Inflation percentage:", inflationPercentage.toFixed(2) + "%");
 })
-
-
-
 
 </script>
 
 <template>
   <div class="list">
     <div class="total">Deleted: <b>{{totalDeleted}}</b> | Total no deleted:<b>{{ data.allPost.length}}</b></div>
-    <div class="item" v-for="item in data.allPost" v-if="data.cargado">
+    <div class="item" v-for="item in data.allPost" v-if="data.cargado" :key="item.id">
       <img :src="item.thumbnail" alt="">
       <p><a :href="item.permalink" target="_blank">{{ item.title }}</a></p>
       <div class="bottom-card"><div class="price">{{ getPrice(item.price) }}</div>
@@ -138,6 +138,7 @@ console.log("Inflation percentage:", inflationPercentage.toFixed(2) + "%");
 </template>
 
 <style lang="scss">
+
   div.list{
     display: flex;
     width: 100%;
